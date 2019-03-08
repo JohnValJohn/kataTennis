@@ -10,32 +10,32 @@ public class Game {
 
 
     public void scoreOnePoint(Player pointWinner) {
-        GameScore previousScore = pointWinner.getScore();
+        GameScore previousScore = pointWinner.getGameScore();
         Player otherPlayer = pointWinner == player1 ? player2 : player1;
         switch (previousScore) {
             case ZERO:
-                pointWinner.setScore(GameScore.FIFTEEN);
+                pointWinner.setGameScore(GameScore.FIFTEEN);
                 break;
             case FIFTEEN:
-                pointWinner.setScore(GameScore.THIRTY);
+                pointWinner.setGameScore(GameScore.THIRTY);
                 break;
             case THIRTY:
-                if (otherPlayer.getScore() == GameScore.FOURTY) {
+                if (otherPlayer.getGameScore() == GameScore.FOURTY) {
                     setDeuceScore();
                 } else {
-                    pointWinner.setScore(GameScore.FOURTY);
+                    pointWinner.setGameScore(GameScore.FOURTY);
                 }
                 break;
             case FOURTY:
-                if (otherPlayer.getScore() == GameScore.ADVANTAGE){
+                if (otherPlayer.getGameScore() == GameScore.ADVANTAGE){
                     setDeuceScore();
                 } else {
                     winGame(pointWinner);
                 }
                 break;
             case DEUCE:
-                pointWinner.setScore(GameScore.ADVANTAGE);
-                otherPlayer.setScore(GameScore.FOURTY);
+                pointWinner.setGameScore(GameScore.ADVANTAGE);
+                otherPlayer.setGameScore(GameScore.FOURTY);
                 break;
             case ADVANTAGE:
                 winGame(pointWinner);
@@ -43,13 +43,13 @@ public class Game {
     }
 
     private void setDeuceScore() {
-        player1.setScore(GameScore.DEUCE);
-        player2.setScore(GameScore.DEUCE);
+        player1.setGameScore(GameScore.DEUCE);
+        player2.setGameScore(GameScore.DEUCE);
     }
 
     private void winGame(Player winner) {
-        player1.setScore(GameScore.ZERO);
-        player2.setScore(GameScore.ZERO);
+        player1.setGameScore(GameScore.ZERO);
+        player2.setGameScore(GameScore.ZERO);
         this.setWinner(winner);
     }
 

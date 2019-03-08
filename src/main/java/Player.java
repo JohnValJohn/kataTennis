@@ -1,11 +1,20 @@
 public class Player {
-    private GameScore score = GameScore.ZERO;
+    private GameScore gameScore = GameScore.ZERO;
+    private int tennisSetScore = 0;
 
-    public GameScore getScore() {
-        return score;
+    public int getTennisSetScore() {
+        return tennisSetScore;
     }
 
-    public void setScore(GameScore score) {
-        this.score = score;
+    public void setTennisSetScore(int tennisSetScore) {
+        this.tennisSetScore = tennisSetScore;
+    }
+
+    public GameScore getGameScore() {
+        return gameScore;
+    }
+
+    public void setGameScore(GameScore gameScore) {
+        this.gameScore = gameScore;
     }
 }
