@@ -8,24 +8,49 @@ public class Game {
         this.player2 = player2;
     }
 
-    public void scoreOnePoint(Player pointWinner){
-        int previousScore = pointWinner.getScore();
-        switch (previousScore){
-            case 0:
-                pointWinner.setScore(15);
+
+    public void scoreOnePoint(Player pointWinner) {
+        GameScore previousScore = pointWinner.getScore();
+        Player otherPlayer = pointWinner == player1 ? player2 : player1;
+        switch (previousScore) {
+            case ZERO:
+                pointWinner.setScore(GameScore.FIFTEEN);
                 break;
-            case 15:
-                pointWinner.setScore(30);
+            case FIFTEEN:
+                pointWinner.setScore(GameScore.THIRTY);
                 break;
-            case 30:
-                pointWinner.setScore(40);
+            case THIRTY:
+                if (otherPlayer.getScore() == GameScore.FOURTY) {
+                    setDeuceScore();
+                } else {
+                    pointWinner.setScore(GameScore.FOURTY);
+                }
                 break;
-            case 40:
-                player1.setScore(0);
-                player2.setScore(0);
-                this.setWinner(pointWinner);
+            case FOURTY:
+                if (otherPlayer.getScore() == GameScore.ADVANTAGE){
+                    setDeuceScore();
+                } else {
+                    winGame(pointWinner);
+                }
                 break;
+            case DEUCE:
+                pointWinner.setScore(GameScore.ADVANTAGE);
+                otherPlayer.setScore(GameScore.FOURTY);
+                break;
+            case ADVANTAGE:
+                winGame(pointWinner);
         }
+    }
+
+    private void setDeuceScore() {
+        player1.setScore(GameScore.DEUCE);
+        player2.setScore(GameScore.DEUCE);
+    }
+
+    private void winGame(Player winner) {
+        player1.setScore(GameScore.ZERO);
+        player2.setScore(GameScore.ZERO);
+        this.setWinner(winner);
     }
 
     public Player getWinner() {

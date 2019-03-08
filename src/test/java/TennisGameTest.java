@@ -21,47 +21,64 @@ public class TennisGameTest {
     @Test
     public void testOnePoint() {
         g.scoreOnePoint(player1);
-        assertEquals(15, player1.getScore());
-        assertEquals(0, player2.getScore());
+        assertEquals(GameScore.FIFTEEN, player1.getScore());
+        assertEquals(GameScore.ZERO, player2.getScore());
     }
 
     @Test
     public void testTwoStraightPoints(){
         winManyPointsInARow(2, player1);
-        assertEquals(30, player1.getScore());
-        assertEquals(0, player2.getScore());
+        assertEquals(GameScore.THIRTY, player1.getScore());
+        assertEquals(GameScore.ZERO, player2.getScore());
     }
 
     @Test
     public void testThreeStraightPoints(){
         winManyPointsInARow(3, player1);
-        assertEquals(40, player1.getScore());
-        assertEquals(0, player2.getScore());
+        assertEquals(GameScore.FOURTY, player1.getScore());
+        assertEquals(GameScore.ZERO, player2.getScore());
     }
 
     @Test
     public void testStraightGame(){
         winManyPointsInARow(4, player1);
 
-        assertEquals(0, player1.getScore());
-        assertEquals(0, player2.getScore());
+        assertEquals(GameScore.ZERO, player1.getScore());
+        assertEquals(GameScore.ZERO, player2.getScore());
         assertEquals(player1, g.getWinner());
     }
 
     @Test
-    public void testBeginningOfBalancedGame(){
+    public void testDeuce(){
         reachDeuce();
-        assertEquals(40, player1.getScore());
-        assertEquals(40, player2.getScore());
+        assertEquals(GameScore.DEUCE, player1.getScore());
+        assertEquals(GameScore.DEUCE, player2.getScore());
     }
 
     @Test
-    public void testFullBalancedGame(){
+    public void testAdvantage(){
         reachDeuce();
         g.scoreOnePoint(player2);
-        assertEquals(0, player1.getScore());
-        assertEquals(0, player2.getScore());
+        assertEquals(GameScore.FOURTY, player1.getScore());
+        assertEquals(GameScore.ADVANTAGE, player2.getScore());
+    }
+
+    @Test
+    public void testWinAfterDeuce(){
+        reachDeuce();
+        winManyPointsInARow(2, player2);
+        assertEquals(GameScore.ZERO, player1.getScore());
+        assertEquals(GameScore.ZERO, player2.getScore());
         assertEquals(player2, g.getWinner());
+    }
+
+    @Test
+    public void testDeuceAfterAdvantage(){
+        reachDeuce();
+        g.scoreOnePoint(player1);
+        g.scoreOnePoint(player2);
+        assertEquals(GameScore.DEUCE, player1.getScore());
+        assertEquals(GameScore.DEUCE, player2.getScore());
     }
 
     private void reachDeuce() {

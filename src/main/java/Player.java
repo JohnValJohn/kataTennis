@@ -1,11 +1,11 @@
 public class Player {
-    private int score = 0;
+    private GameScore score = GameScore.ZERO;
 
-    public int getScore() {
+    public GameScore getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(GameScore score) {
         this.score = score;
     }
 }
