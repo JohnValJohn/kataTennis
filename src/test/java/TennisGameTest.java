@@ -4,18 +4,23 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 
 @RunWith(JUnit4.class)
 public class TennisGameTest {
     private Game g;
     private Player player1;
     private Player player2;
+    private TennisSet mockedTennisSet = mock(TennisSet.class);
 
     @Before
     public void setup(){
         player1 = new Player();
         player2 = new Player();
-        g = new Game(player1, player2);
+        g = new Game(player1, player2, mockedTennisSet);
     }
 
     @Test
@@ -27,25 +32,22 @@ public class TennisGameTest {
 
     @Test
     public void testTwoStraightPoints(){
-        winManyPointsInARow(2, player1);
+        scoreManyPoints(2, player1);
         assertEquals(GameScore.THIRTY, player1.getGameScore());
         assertEquals(GameScore.ZERO, player2.getGameScore());
     }
 
     @Test
     public void testThreeStraightPoints(){
-        winManyPointsInARow(3, player1);
+        scoreManyPoints(3, player1);
         assertEquals(GameScore.FOURTY, player1.getGameScore());
         assertEquals(GameScore.ZERO, player2.getGameScore());
     }
 
     @Test
     public void testStraightGame(){
-        winManyPointsInARow(4, player1);
-
-        assertEquals(GameScore.ZERO, player1.getGameScore());
-        assertEquals(GameScore.ZERO, player2.getGameScore());
-        assertEquals(player1, g.getWinner());
+        scoreManyPoints(4, player1);
+        checkWinner((player1));
     }
 
     @Test
@@ -66,10 +68,8 @@ public class TennisGameTest {
     @Test
     public void testWinAfterDeuce(){
         reachDeuce();
-        winManyPointsInARow(2, player2);
-        assertEquals(GameScore.ZERO, player1.getGameScore());
-        assertEquals(GameScore.ZERO, player2.getGameScore());
-        assertEquals(player2, g.getWinner());
+        scoreManyPoints(2, player2);
+        checkWinner(player2);
     }
 
     @Test
@@ -82,16 +82,22 @@ public class TennisGameTest {
     }
 
     private void reachDeuce() {
-        winManyPointsInARow(2, player1);
+        scoreManyPoints(2, player1);
         g.scoreOnePoint(player2);
         g.scoreOnePoint(player1);
-        winManyPointsInARow(2,player2);
+        scoreManyPoints(2,player2);
     }
 
-    private void winManyPointsInARow(int numberOfPointsWon, Player pointWinner) {
+    private void scoreManyPoints(int numberOfPointsWon, Player pointWinner) {
         for (int i=0; i<numberOfPointsWon; i++){
             g.scoreOnePoint(pointWinner);
         }
+    }
+
+    private void checkWinner(Player winner){
+        assertEquals(GameScore.ZERO, player1.getGameScore());
+        assertEquals(GameScore.ZERO, player2.getGameScore());
+        verify(mockedTennisSet, times(1)).scoreOneGame(winner);
     }
 
 }

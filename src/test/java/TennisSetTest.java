@@ -12,14 +12,38 @@ public class TennisSetTest {
 
     @Test
     public void testOneGameWon(){
-        Game g = new Game(player1, player2);
-        winGame(player1, g);
+        tennisSet.scoreOneGame(player1);
         assertEquals(1, player1.getTennisSetScore());
+    }
+
+    @Test
+    public void testSixStraightGames(){
+        scoreManyGames(6, player2);
+        assertEquals(6, player2.getTennisSetScore());
+        assertEquals(player2, tennisSet.getWinner());
+    }
+
+    @Test
+    public void testCloseSet() {
+        scoreManyGames(5, player1);
+        scoreManyGames(5, player2);
+        tennisSet.scoreOneGame(player1);
+        assertEquals(null, tennisSet.getWinner());
+        tennisSet.scoreOneGame(player1);
+        assertEquals(7, player1.getTennisSetScore());
+        assertEquals(5, player2.getTennisSetScore());
+        assertEquals(player1, tennisSet.getWinner());
     }
 
     private void winGame(Player winner, Game game){
         for (int i = 0; i<4; i++){
             game.scoreOnePoint(winner);
+        }
+    }
+
+    private void scoreManyGames(int numberOfGames, Player gameWinner){
+        for (int i = 0; i< numberOfGames; i++){
+            tennisSet.scoreOneGame(gameWinner);
         }
     }
 

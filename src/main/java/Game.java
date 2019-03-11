@@ -1,11 +1,12 @@
 public class Game {
-    private Player winner;
     private Player player1;
     private Player player2;
+    private TennisSet tennisSet;
 
-    public Game(Player player1, Player player2) {
+    public Game(Player player1, Player player2, TennisSet tennisSet) {
         this.player1 = player1;
         this.player2 = player2;
+        this.tennisSet = tennisSet;
     }
 
 
@@ -50,15 +51,7 @@ public class Game {
     private void winGame(Player winner) {
         player1.setGameScore(GameScore.ZERO);
         player2.setGameScore(GameScore.ZERO);
-        this.setWinner(winner);
-    }
-
-    public Player getWinner() {
-        return winner;
-    }
-
-    public void setWinner(Player winner) {
-        this.winner = winner;
+        tennisSet.scoreOneGame(winner);
     }
 
     public Player getPlayer1() {
